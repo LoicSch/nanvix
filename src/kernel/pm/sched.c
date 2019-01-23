@@ -64,6 +64,8 @@ PUBLIC void resume(struct process *proc)
  */
 PUBLIC void yield(void)
 {
+	// Scheduling by priority
+	
 	struct process *p;    /* Working process.     */
 	struct process *next; /* Next process to run. */
 
