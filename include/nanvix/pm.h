@@ -127,6 +127,8 @@
 	 */
 	struct process
 	{
+	
+		int billet;
 		/**
 		 * @name Hard-coded Fields
 		 */
