@@ -154,6 +154,7 @@ found:
 	proc->alarm = 0;
 	proc->next = NULL;
 	proc->chain = NULL;
+	proc->tickets = curr_proc->counter*2+1;
 	sched(proc);
 
 	curr_proc->nchildren++;

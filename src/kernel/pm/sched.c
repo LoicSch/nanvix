@@ -23,6 +23,8 @@
 #include <nanvix/hal.h>
 #include <nanvix/pm.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <time.h>
 
 /**
  * @brief Schedules a process to execution.
@@ -59,6 +61,20 @@ PUBLIC void resume(struct process *proc)
 		sched(proc);
 }
 
+PUBLIC int total_tickets(void) {
+	struct process *p;
+	int tot = 0;
+	
+	for (p = FIRST_PROC; p <= LAST_PROC; p++) {
+		if(!IS_VALID(p))
+			continue;
+		
+		tot += p->tickets;
+	}
+	
+	return tot;
+}
+
 /**
  * @brief Yields the processor.
  */
@@ -90,46 +106,25 @@ PUBLIC void yield(void)
 
 	/* Choose a process to run next. */
 	next = IDLE;
+	
+	int tot = total_tickets();
+	int golden_ticket = rand()%tot;
+	int count_ticket = 0;
+	
 	for (p = FIRST_PROC; p <= LAST_PROC; p++)
 	{
 		/* Skip non-ready process. */
 		if (p->state != PROC_READY)
 			continue;
 		
-		/*
-		 * Process with higher
-		 * waiting time found.
-		 */
-		if (p->counter > next->counter)
-		{
+		if (golden_ticket <= count_ticket + p->tickets) {
 			next->counter++;
 			next = p;
 		}
-		else if (p->counter == next->counter) {
-			if(p->nice < next->nice) {
-				next->counter++;
-				next = p;
-			}
-			else if (p->nice == next->nice) {
-				if(p->priority < next->priority) {
-					next->counter++;
-					next = p;
-				}
-				else {
-					p->counter++;
-				}
-			}
-			else {
-				p->counter++;
-			}
-		}
-			
-		/*
-		 * Increment waiting
-		 * time of process.
-		 */
-		else
+		else {
 			p->counter++;
+			count_ticket += p->tickets;
+		}
 	}
 	
 	/* Switch to next process. */
