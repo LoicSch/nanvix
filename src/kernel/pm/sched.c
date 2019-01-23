@@ -105,6 +105,24 @@ PUBLIC void yield(void)
 			next->counter++;
 			next = p;
 		}
+		else if (p->counter == next->counter) {
+			if(p->nice < next->nice) {
+				next->counter++;
+				next = p;
+			}
+			else if (p->nice == next->nice) {
+				if(p->priority < next->priority) {
+					next->counter++;
+					next = p;
+				}
+				else {
+					p->counter++;
+				}
+			}
+			else {
+				p->counter++;
+			}
+		}
 			
 		/*
 		 * Increment waiting
