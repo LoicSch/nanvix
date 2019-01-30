@@ -23,8 +23,7 @@
 #include <nanvix/hal.h>
 #include <nanvix/pm.h>
 #include <signal.h>
-#include <stdlib.h>
-#include <time.h>
+#include <sys/times.h>
 
 /**
  * @brief Schedules a process to execution.
@@ -108,6 +107,7 @@ PUBLIC void yield(void)
 	next = IDLE;
 	
 	int tot = total_tickets();
+	srand(times(NULL));
 	int golden_ticket = rand()%tot;
 	int count_ticket = 0;
 	
