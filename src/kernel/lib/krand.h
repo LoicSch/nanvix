@@ -27,5 +27,7 @@
 
 	/* Forward definitions. */
 	extern unsigned _next;
+	extern int krand(void);
+	extern void ksrand(unsigned seed);
 
 #endif /* _KRAND_H_ */

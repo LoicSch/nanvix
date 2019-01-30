@@ -369,6 +369,56 @@ static int sched_test3(void)
 	return (0);
 }
 
+static int sched_test4(void)
+{
+	pid_t child1;
+	pid_t child2;
+
+	child1 = fork();
+	
+	/* Failed to fork(). */
+	if (child1 < 0)
+		return (-1);
+	
+	/* Parent process. */
+	else if (child1 > 0)
+	{
+		child2 = fork();
+
+		/* Failed to fork(). */
+		if (child2 < 0)
+			return (-1);
+
+		/* Parent process */
+		else if (child2 > 0)
+		{
+			nice(-2*NZERO);
+			work_cpu();	
+		}
+
+		/* Child2 process */
+		else
+		{
+			nice(4*NZERO);
+			work_io();
+			_exit(EXIT_SUCCESS);
+		}
+		
+	}
+	
+	/* Child1 process. */
+	else
+	{
+		nice(2*NZERO);
+		work_io();
+		_exit(EXIT_SUCCESS);
+	}
+		
+	wait(NULL);
+
+	return (0);
+}
+
 /*============================================================================*
  *                             Semaphores Test                                *
  *============================================================================*/
@@ -644,7 +694,7 @@ int main(int argc, char **argv)
 			printf("  waiting for child  [%s]\n",
 				(!sched_test0()) ? "PASSED" : "FAILED");
 			printf("  dynamic priorities [%s]\n",
-				(!sched_test1()) ? "PASSED" : "FAILED");
+				(!sched_test1() && !sched_test4()) ? "PASSED" : "FAILED");
 			printf("  scheduler stress   [%s]\n",
 				(!sched_test2() && !sched_test3()) ? "PASSED" : "FAILED");
 		}
