@@ -23,6 +23,7 @@
 #include <nanvix/hal.h>
 #include <nanvix/pm.h>
 #include <signal.h>
+#include "../lib/krand.h"
 
 /**
  * @brief Schedules a process to execution.

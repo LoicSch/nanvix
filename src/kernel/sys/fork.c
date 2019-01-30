@@ -154,6 +154,14 @@ found:
 	proc->alarm = 0;
 	proc->next = NULL;
 	proc->chain = NULL;
+
+	int nb = (40 - curr_proc->priority + curr_proc->nice)/10;
+	if(nb <= 0){
+		proc->tickets = 1;
+	} else {
+		proc->tickets = nb;	
+	}
+	
 	sched(proc);
 
 	curr_proc->nchildren++;
