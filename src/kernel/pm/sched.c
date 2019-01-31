@@ -120,7 +120,7 @@ PUBLIC void yield(void)
 			continue;
 		
 		if (!found) {
-			if (golden_ticket <= count_ticket + p->tickets) {
+			if (golden_ticket < count_ticket + p->tickets) {
 				next->counter++;
 				next->tickets++;
 				next = p;
