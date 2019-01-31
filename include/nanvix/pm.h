@@ -197,7 +197,6 @@
     	 * @name Scheduling information
     	 */
 		/**@{*/
-		int tickets; 			 /**< Number of tickets		  */
     	unsigned state;          /**< Current state.          */
     	int counter;             /**< Remaining quantum.      */
     	int priority;            /**< Process priorities.     */

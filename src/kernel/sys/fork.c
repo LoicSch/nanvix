@@ -33,7 +33,6 @@ PUBLIC pid_t sys_fork(void)
 {
 	int i;                /* Loop index.     */
 	int err;              /* Error?          */
-	int nb;				  /* Nb ticket lottery */
 	struct process *proc; /* Process.        */
 	struct region *reg;   /* Memory region.  */
 	struct pregion *preg; /* Process region. */
@@ -155,13 +154,6 @@ found:
 	proc->alarm = 0;
 	proc->next = NULL;
 	proc->chain = NULL;
-
-	nb = (40 - curr_proc->priority - curr_proc->nice)/10;
-	if(nb <= 0){
-		proc->tickets = 1;
-	} else {
-		proc->tickets = nb + 1;	
-	}
 
 	sched(proc);
 
