@@ -23,7 +23,7 @@
 #include <nanvix/hal.h>
 #include <nanvix/pm.h>
 #include <signal.h>
-#include "../lib/krand.h"
+#include <nanvix/klib.h>
 
 
 /**
@@ -110,33 +110,26 @@ PUBLIC void yield(void)
 	int tot = total_tickets();
 	ksrand(0);
 	int golden_ticket = krand()%tot;
-	int count_ticket = 0;
-	int found = 0;
+	int count_ticket;
+	p = FIRST_PROC;
 
 	for (p = FIRST_PROC; p <= LAST_PROC; p++)
 	{
-		/* Skip non-ready process. */
 		if (p->state != PROC_READY)
 			continue;
-		
-		if (!found) {
-			if (golden_ticket <= count_ticket + p->tickets) {
-				next->counter++;
-				next->tickets++;
-				next = p;
-				found = 1;
-			}
-			else {
-				p->counter++;
-				count_ticket += p->tickets;
-				p->tickets++;
-			}	
+
+		count_ticket += p->tickets;
+		if (golden_ticket < count_ticket)
+		{
+			next->counter++;
+			next = p;
+			golden_ticket = tot + 1;
 		}
-		else {
-			p->tickets++;
+		else{
+			p->counter++;
 		}
 		
-	}
+	}	
 	
 	/* Switch to next process. */
 	next->priority = PRIO_USER;
