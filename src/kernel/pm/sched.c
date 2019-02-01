@@ -97,7 +97,7 @@ PUBLIC void yield(void)
 		if (p->state != PROC_READY)
 			continue;
 
-		if (p->counter > 50) {
+		if (p->counter > 51) {
 			next->counter++;
 			next = p;
 		}
