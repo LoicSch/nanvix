@@ -20,13 +20,6 @@
 #ifndef SEM_H_
 #define SEM_H_
 
-	/* Semaphore structure */
-	struct semaphore
-	{
-		int val; /* Value of the semaphore */
-		struct process **queue; /* Queue of process */
-	};
-	
 	/**
 	 * @brief Comand values for semaphores.
 	 */
