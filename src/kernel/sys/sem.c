@@ -13,11 +13,12 @@ void init_sem(){
 	for (s = FIRST_SEM; s <= LAST_SEM; s++)
 	{
 		s->valid = 0;
+		s->key = -1;
 	}
 }
 
 /* Create a semaphore and initialize it with n */
-int create(int n){
+int create(int n, unsigned key){
 	struct semaphore *s = FIRST_SEM;
 	int semid = 0;
 
@@ -28,7 +29,7 @@ int create(int n){
 
 	if(s <= LAST_SEM){
 		s->valid = 1;
-		s->key = semid;
+		s->key = key;
 		s->value = n;
 		s->queue = NULL;
 
@@ -71,5 +72,6 @@ int up(int semid){
 int destroy(int semid){
 	struct semaphore *s = semtab[semid];
 	s->valid = 0;
+	s->key = -1;
 	return 0;
 }
