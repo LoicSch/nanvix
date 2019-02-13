@@ -1,4 +1,5 @@
 #include <sys/sem.h>
+#include <sys/mysem.h>
 
 PUBLIC int sys_semop(int semid, int op){
 
