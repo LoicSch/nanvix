@@ -1,23 +1,27 @@
-#include <nanvix/pm.h>
-#include <sys/sem.h>
-#include <sys/mysem.h>
+#ifndef MYSEM_H_
+#define MYSEM_H_
 
-#define FIRST_SEM ((&semtab[0]))           /**< First semaphore. */
-#define LAST_SEM ((&semtab[PROC_MAX - 1])) /**< Last semaphore.  */
+	#include <nanvix/pm.h>
+	#include <sys/sem.h>
 
-/* Semaphore structure */
-struct semaphore
-{
-	int valid; /* Is the process is valid ? */
-	int key; /* Key associated to the semaphore */
-	int val; /* Value of the semaphore */
-	struct process **queue; /* Queue of process */
-};
+	#define FIRST_SEM ((&semtab[0]))           /**< First semaphore. */
+	#define LAST_SEM ((&semtab[PROC_MAX - 1])) /**< Last semaphore.  */
 
-struct semaphore semtab[PROC_MAX];
+	/* Semaphore structure */
+	struct semaphore
+	{
+		int valid; /* Is the process is valid ? */
+		unsigned key; /* Key associated to the semaphore */
+		int value; /* Value of the semaphore */
+		struct process **queue; /* Queue of process */
+	};
 
-void init_sem();
-int create(int n, unsigned key);
-int down (int semid);
-int up(int semid);
-int destroy(int semid);
+	struct semaphore semtab[PROC_MAX];
+
+	void init_sem();
+	int create(int n, unsigned key);
+	int down (int semid);
+	int up(int semid);
+	int destroy(int semid);
+
+#endif

@@ -5,8 +5,6 @@
 #include <sys/mysem.h>
 #include <nanvix/klib.h>
 
-PUBLIC struct semaphore semtab[PROC_MAX];
-
 void init_sem(){
 	struct semaphore *s;
 
@@ -43,7 +41,8 @@ int create(int n, unsigned key){
 /* Test the semaphore value. If it's positive, then it decreased and the process follow its execution 
    else the process is bloqued in the waiting list */
 int down (int semid){
-	struct semaphore *s = semtab[semid];
+	struct semaphore *s;
+	s = (&semtab[semid]);
 
 	if(s->value > 0){
 		s->value--;
@@ -57,7 +56,8 @@ int down (int semid){
 /* Test the semaphore value. If it's nulle and there is a process in the waiting list, then the process 
    is debloqued. Else the value is increased */
 int up(int semid){
-	struct semaphore *s = semtab[semid];
+	struct semaphore *s;
+	s = (&semtab[semid]);
 
 	if(s->value == 0 && s->queue != NULL){
 		wakeup(s->queue);
@@ -70,7 +70,8 @@ int up(int semid){
 
 /* destroy the semaphore */
 int destroy(int semid){
-	struct semaphore *s = semtab[semid];
+	struct semaphore *s;
+	s = (&semtab[semid]);
 	s->valid = 0;
 	s->key = -1;
 	return 0;

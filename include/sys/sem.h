@@ -30,8 +30,8 @@
 	/**@}*/
 
 	/* Forward definitions. */
-	extern int semget(unsigned);
-	extern int semctl(int, int, int);
-	extern int semop(int, int);
+	extern int semget(unsigned key);
+	extern int semctl(int semid, int cmd, int val);
+	extern int semop(int semid, int op);
 
 #endif /* SEM_H_ */

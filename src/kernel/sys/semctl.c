@@ -3,9 +3,10 @@
 
 PUBLIC int sys_semctl(int semid, int cmd, int val){
 	int val_return;
+	struct semaphore *s;
 	switch(cmd){
 		case GETVAL:
-			struct semaphore *s = semtab[semid];
+			s = (&semtab[semid]);
 			if(s->valid){
 				val_return = s->value;
 			} else {
@@ -13,7 +14,7 @@ PUBLIC int sys_semctl(int semid, int cmd, int val){
 			}
 			break;
 		case SETVAL:
-			struct semaphore *s = semtab[semid];
+			s = (&semtab[semid]);
 			if(s->valid){
 				s->value = val;
 				val_return = 0;	
