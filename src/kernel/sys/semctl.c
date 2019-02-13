@@ -1,7 +1,10 @@
 #include <sys/sem.h>
 #include <sys/mysem.h>
+#include <nanvix/klib.h>
 
 PUBLIC int sys_semctl(int semid, int cmd, int val){
+
+	kprintf("Entree Semctl");
 	int val_return;
 	struct semaphore *s;
 	switch(cmd){
@@ -29,5 +32,6 @@ PUBLIC int sys_semctl(int semid, int cmd, int val){
 			val_return = -1;
 			break;
 	}
+	kprintf("Sortie Smctl val_return=%d",val_return);
 	return val_return;
 }
