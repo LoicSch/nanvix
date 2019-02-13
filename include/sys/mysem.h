@@ -1,4 +1,6 @@
 #include <nanvix/pm.h>
+#include <sys/sem.h>
+#include <sys/mysem.h>
 
 #define FIRST_SEM ((&semtab[0]))           /**< First semaphore. */
 #define LAST_SEM ((&semtab[PROC_MAX - 1])) /**< Last semaphore.  */
