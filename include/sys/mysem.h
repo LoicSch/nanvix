@@ -7,6 +7,8 @@
 	#define FIRST_SEM ((&semtab[0]))           /**< First semaphore. */
 	#define LAST_SEM ((&semtab[PROC_MAX - 1])) /**< Last semaphore.  */
 
+	#define VAL_INIT 0;
+
 	/* Semaphore structure */
 	struct semaphore
 	{

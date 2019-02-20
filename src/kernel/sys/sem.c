@@ -44,12 +44,13 @@ int down (int semid){
 	struct semaphore *s;
 	s = (&semtab[semid]);
 
-	if(s->value > 0){
+	while(s->valid && s->value <= 0){
+		sleep(s->queue, 0);		
+	}
+
+	if(s->valid)
 		s->value--;
-	}
-	else{
-		sleep(s->queue, 0);
-	}
+
 	return 0;
 }
 
@@ -59,12 +60,12 @@ int up(int semid){
 	struct semaphore *s;
 	s = (&semtab[semid]);
 
-	if(s->value == 0 && s->queue != NULL){
+	s->value++;
+
+	if(s->value > 0 && s->queue != NULL){
 		wakeup(s->queue);
 	}
-	else{
-		s->value++;
-	}
+
 	return 0;
 }
 
@@ -72,7 +73,10 @@ int up(int semid){
 int destroy(int semid){
 	struct semaphore *s;
 	s = (&semtab[semid]);
+
 	s->valid = 0;
 	s->key = -1;
+	wakeup(s->queue);
+	
 	return 0;
 }

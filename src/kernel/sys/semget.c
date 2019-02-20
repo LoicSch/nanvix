@@ -8,7 +8,7 @@ PUBLIC int sys_semget(unsigned key){
 	struct semaphore *s = FIRST_SEM;
 	int semid = 0;
 	
-	while (s->key != key && s<= LAST_SEM) {
+	while (!s->valid || s->key != key && s<= LAST_SEM) {
 		
 		semid++;
 		s++;
@@ -20,7 +20,7 @@ PUBLIC int sys_semget(unsigned key){
 		
 	} else {
 	
-		semid  = create(0, key);
+		semid  = create(VAL_INIT, key);
 		kprintf("Sortie semget semid=%d",semid);
 		return semid;
 		
