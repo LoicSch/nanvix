@@ -8,7 +8,7 @@ PUBLIC int sys_semget(unsigned key){
 	struct semaphore *s = FIRST_SEM;
 	int semid = 0;
 	
-	while (!s->valid || s->key != key && s<= LAST_SEM) {
+	while (s <= LAST_SEM && (!s->valid || s->key != key)) {
 		
 		semid++;
 		s++;

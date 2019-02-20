@@ -1,5 +1,6 @@
 #include <sys/sem.h>
 #include <nanvix/pm.h>
+#include <nanvix/const.h>
 #include <nanvix/klib.h>
 #include <nanvix/config.h>
 #include <sys/mysem.h>
@@ -41,6 +42,9 @@ int create(int n, unsigned key){
 /* Test the semaphore value. If it's positive, then it decreased and the process follow its execution 
    else the process is bloqued in the waiting list */
 int down (int semid){
+
+	disable_interrupts();
+
 	struct semaphore *s;
 	s = (&semtab[semid]);
 
@@ -50,13 +54,18 @@ int down (int semid){
 
 	if(s->valid)
 		s->value--;
-
+	
+	enable_interrupts();
+	
 	return 0;
 }
 
 /* Test the semaphore value. If it's nulle and there is a process in the waiting list, then the process 
    is debloqued. Else the value is increased */
 int up(int semid){
+
+	disable_interrupts();
+
 	struct semaphore *s;
 	s = (&semtab[semid]);
 
@@ -65,6 +74,8 @@ int up(int semid){
 	if(s->value > 0 && s->queue != NULL){
 		wakeup(s->queue);
 	}
+
+	enable_interrupts();
 
 	return 0;
 }

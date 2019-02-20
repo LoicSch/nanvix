@@ -5,16 +5,27 @@
 
 PUBLIC int sys_semop(int semid, int op){
 
-	kprintf("Entree Semop");
+	//kprintf("Entree Semop");
 	int val_return;
-	disable_interrupts();
+	int i = 0;
+	
 	if (op < 0) {
 		
-		val_return = down(semid);
+		while(i > op) {
+			
+			val_return = down(semid);
+			i--;
+		}
 	
 	} else if (op > 0) {
+		
+		i=0;
+		
+		while (i < op) {
 	
-		val_return = up(semid);
+			val_return = up(semid);
+			i++;
+		}
 	}
 	
 	else {
@@ -22,9 +33,8 @@ PUBLIC int sys_semop(int semid, int op){
 		val_return = -1;
 	}
 	
-	enable_interrupts();
 
-	kprintf("Sortie Semop val_return=%d", val_return);
+	//kprintf("Sortie Semop val_return=%d", val_return);
 	return val_return;
 
 }
