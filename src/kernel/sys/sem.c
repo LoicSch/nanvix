@@ -4,7 +4,6 @@
 #include <nanvix/klib.h>
 #include <nanvix/config.h>
 #include <sys/mysem.h>
-#include <nanvix/klib.h>
 
 void init_sem(){
 	struct semaphore *s;
@@ -43,20 +42,15 @@ int create(int n, unsigned key){
    else the process is bloqued in the waiting list */
 int down (int semid){
 
-	disable_interrupts();
-
 	struct semaphore *s;
 	s = (&semtab[semid]);
 
-	while(s->valid && s->value <= 0){
-		sleep(s->queue, 0);		
+	s->value--;
+	
+	if(s->value < 0){
+		sleep(&s->queue, PRIO_SEM);
 	}
 
-	if(s->valid)
-		s->value--;
-	
-	enable_interrupts();
-	
 	return 0;
 }
 
@@ -64,18 +58,14 @@ int down (int semid){
    is debloqued. Else the value is increased */
 int up(int semid){
 
-	disable_interrupts();
-
 	struct semaphore *s;
 	s = (&semtab[semid]);
 
 	s->value++;
-
-	if(s->value > 0 && s->queue != NULL){
-		wakeup(s->queue);
+	if (s->queue != NULL)
+	{
+		wakeup_single(&s->queue);
 	}
-
-	enable_interrupts();
 
 	return 0;
 }
@@ -87,7 +77,7 @@ int destroy(int semid){
 
 	s->valid = 0;
 	s->key = -1;
-	wakeup(s->queue);
+	wakeup(&s->queue);
 	
 	return 0;
 }

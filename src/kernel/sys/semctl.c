@@ -4,12 +4,11 @@
 
 PUBLIC int sys_semctl(int semid, int cmd, int val){
 
-	kprintf("Entree Semctl");
 	int val_return;
 	struct semaphore *s;
+	s = (&semtab[semid]);
 	switch(cmd){
 		case GETVAL:
-			s = (&semtab[semid]);
 			if(s->valid){
 				val_return = s->value;
 			} else {
@@ -17,7 +16,6 @@ PUBLIC int sys_semctl(int semid, int cmd, int val){
 			}
 			break;
 		case SETVAL:
-			s = (&semtab[semid]);
 			if(s->valid){
 				s->value = val;
 				val_return = 0;	
@@ -32,6 +30,5 @@ PUBLIC int sys_semctl(int semid, int cmd, int val){
 			val_return = -1;
 			break;
 	}
-	kprintf("Sortie Smctl val_return=%d",val_return);
 	return val_return;
 }

@@ -103,3 +103,18 @@ PUBLIC void wakeup(struct process **chain)
 		*chain = (*chain)->next;
 	}
 }
+
+PUBLIC void wakeup_single(struct process **chain)
+{
+	if(idle_chain == chain)
+	{
+		idle_chain = NULL;
+		return;
+	}
+
+	if(*chain != NULL)
+	{
+		sched(*chain);
+		*chain = (*chain)->next;
+	}
+}

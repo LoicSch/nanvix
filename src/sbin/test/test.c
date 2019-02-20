@@ -492,13 +492,11 @@ int semaphore_test3(void)
 	SEM_CREATE(mutex, 1);
 	SEM_CREATE(empty, 2);
 	SEM_CREATE(full, 3);
-	printf("Semaphores crees\n");
 
 	/* Initialize semaphores. */
 	SEM_INIT(full, 0);
 	SEM_INIT(empty, BUFFER_SIZE);
 	SEM_INIT(mutex, 1);
-	printf("Semaphore initialises\n");
 
 	if ((pid = fork()) < 0)
 		return (-1);
@@ -515,6 +513,7 @@ int semaphore_test3(void)
 				
 			SEM_UP(mutex);
 			SEM_UP(full);
+
 		}
 
 		_exit(EXIT_SUCCESS);
@@ -534,6 +533,7 @@ int semaphore_test3(void)
 				
 			SEM_UP(mutex);
 			SEM_UP(empty);
+
 		} while (item != (NR_ITEMS - 1));
 	}
 					

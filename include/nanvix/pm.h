@@ -198,7 +198,6 @@
     	 * @name Scheduling information
     	 */
 		/**@{*/
-		int tickets; 			 /**< Number of tickets		  */
     	unsigned state;          /**< Current state.          */
     	int counter;             /**< Remaining quantum.      */
     	int priority;            /**< Process priorities.     */
@@ -218,6 +217,7 @@
 	EXTERN void sleep(struct process **, int);
 	EXTERN void sndsig(struct process *, int);
 	EXTERN void wakeup(struct process **);
+	EXTERN void wakeup_single(struct process **);
 	EXTERN void yield(void);
 	
 	/**

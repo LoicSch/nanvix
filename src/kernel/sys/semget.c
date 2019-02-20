@@ -4,7 +4,6 @@
 
 PUBLIC int sys_semget(unsigned key){
 
-	kprintf("Entree semget");
 	struct semaphore *s = FIRST_SEM;
 	int semid = 0;
 	
@@ -21,7 +20,6 @@ PUBLIC int sys_semget(unsigned key){
 	} else {
 	
 		semid  = create(VAL_INIT, key);
-		kprintf("Sortie semget semid=%d",semid);
 		return semid;
 		
 	}

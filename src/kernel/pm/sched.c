@@ -61,27 +61,11 @@ PUBLIC void resume(struct process *proc)
 		sched(proc);
 }
 
-PUBLIC int total_tickets(void) {
-	struct process *p;
-	int tot = 0;
-	
-	for (p = FIRST_PROC; p <= LAST_PROC; p++) {
-		if(!IS_VALID(p))
-			continue;
-		
-		tot += p->tickets;
-	}
-	
-	return tot;
-}
-
 /**
  * @brief Yields the processor.
  */
 PUBLIC void yield(void)
 {
-	// Scheduling by priority
-	
 	struct process *p;    /* Working process.     */
 	struct process *next; /* Next process to run. */
 
@@ -106,30 +90,29 @@ PUBLIC void yield(void)
 
 	/* Choose a process to run next. */
 	next = IDLE;
-	
-	int tot = total_tickets();
-	ksrand(0);
-	int golden_ticket = krand()%tot;
-	int count_ticket;
-	p = FIRST_PROC;
-
 	for (p = FIRST_PROC; p <= LAST_PROC; p++)
 	{
+		/* Skip non-ready process. */
 		if (p->state != PROC_READY)
 			continue;
-
-		count_ticket += p->tickets;
-		if (golden_ticket < count_ticket)
+		
+		/*
+		 * Process with higher
+		 * waiting time found.
+		 */
+		if (p->counter > next->counter)
 		{
 			next->counter++;
 			next = p;
-			golden_ticket = tot + 1;
 		}
-		else{
+			
+		/*
+		 * Increment waiting
+		 * time of process.
+		 */
+		else
 			p->counter++;
-		}
-		
-	}	
+	}
 	
 	/* Switch to next process. */
 	next->priority = PRIO_USER;

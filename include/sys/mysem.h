@@ -7,7 +7,7 @@
 	#define FIRST_SEM ((&semtab[0]))           /**< First semaphore. */
 	#define LAST_SEM ((&semtab[PROC_MAX - 1])) /**< Last semaphore.  */
 
-	#define VAL_INIT 0;
+	#define VAL_INIT 0
 
 	/* Semaphore structure */
 	struct semaphore
@@ -15,7 +15,7 @@
 		int valid; /* Is the process is valid ? */
 		unsigned key; /* Key associated to the semaphore */
 		int value; /* Value of the semaphore */
-		struct process **queue; /* Queue of process */
+		struct process *queue; /* Queue of process */
 	};
 
 	struct semaphore semtab[PROC_MAX];
