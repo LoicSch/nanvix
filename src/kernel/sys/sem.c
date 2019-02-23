@@ -62,7 +62,7 @@ int up(int semid){
 	s = (&semtab[semid]);
 
 	s->value++;
-	if (s->queue != NULL)
+	if (s->value == 0 && s->queue != NULL) //on regarde si des processus sont en attente d'être reveillé
 	{
 		wakeup_single(&s->queue);
 	}
