@@ -328,7 +328,7 @@ PRIVATE int allocf(void)
 	
 found:		
 
-	frames[i].age = ticks;
+	frames[i].age = ticks; //see in clock.c
 	frames[i].count = 1;
 	
 	return (i);
