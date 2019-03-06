@@ -278,11 +278,12 @@ PUBLIC void putkpg(void *kpg)
  */
 PRIVATE struct
 {
+	unsigned chance;/**< Second chance.		  */
 	unsigned count; /**< Reference count.     */
 	unsigned age;   /**< Age.                 */
 	pid_t owner;    /**< Page owner.          */
 	addr_t addr;    /**< Address of the page. */
-} frames[NR_FRAMES] = {{0, 0, 0, 0},  };
+} frames[NR_FRAMES] = {{0, 0, 0, 0, 0},  };
 
 /**
  * @brief Allocates a page frame.
@@ -322,6 +323,10 @@ PRIVATE int allocf(void)
 	if (oldest < 0)
 		return (-1);
 	
+	if(frames[oldest].chance){
+		goto second_chance;
+	}
+
 	/* Swap page out. */
 	if (swap_out(curr_proc, frames[i = oldest].addr))
 		return (-1);
@@ -330,8 +335,15 @@ found:
 
 	frames[i].age = ticks; //see in clock.c
 	frames[i].count = 1;
+	frames[i].chance = 0;
 	
 	return (i);
+
+second_chance:
+	frames[oldest].chance = 0;
+	frames[oldest].age = ticks;
+	return(allocf());
+
 }
 
 /**
