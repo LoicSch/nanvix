@@ -319,8 +319,10 @@ PRIVATE int allocf(void)
 			if ((oldest < 0) || (OLDEST(i, oldest))){
 				if(!pg->accessed)
 					oldest = i;
-				else
+				else {
 					pg->accessed = 0;
+					frames[i].age = ticks;
+				}
 			}
 		}
 	}
