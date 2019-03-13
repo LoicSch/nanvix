@@ -316,8 +316,12 @@ PRIVATE int allocf(void)
 			pg = getpte(curr_proc, frames[i].addr);
 
 			/* Oldest page found. */
-			if ((oldest < 0) || (OLDEST(i, oldest) && !pg->accessed))
-				oldest = i;
+			if ((oldest < 0) || (OLDEST(i, oldest))){
+				if(!pg->accessed)
+					oldest = i;
+				else
+					pg->accessed = 0;
+			}
 		}
 	}
 	
