@@ -715,7 +715,6 @@ PUBLIC int vfault(addr_t addr)
 		/* Read page. */
 		if (readpg(reg, addr))
 			goto error1;
-		frames[pg->frame].chance = 1;
 	}
 		
 	/* Swap page in. */
