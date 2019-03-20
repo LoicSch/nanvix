@@ -283,7 +283,7 @@ PRIVATE struct
 	unsigned age;   /**< Age.                 */
 	pid_t owner;    /**< Page owner.          */
 	addr_t addr;    /**< Address of the page. */
-} frames[NR_FRAMES] = {{0, 0, 0, 0},  };
+} frames[NR_FRAMES] = {{0, 0, 0, 0, 0},  };
 
 /**
  * @brief Allocates a page frame.
@@ -295,7 +295,6 @@ PRIVATE int allocf(void)
 {
 	int i;      /* Loop index.  */
 	int oldest;  /* Frame index to change */
-	struct pte *pg; /* Page table entry. */
 	
 	/* Search for a free frame. */
 	oldest = -1;
@@ -330,6 +329,7 @@ PRIVATE int allocf(void)
 found:		
 
 	frames[i].age = ticks;
+	frames[i].counter = 0;
 	frames[i].count = 1;
 	
 	return (i);

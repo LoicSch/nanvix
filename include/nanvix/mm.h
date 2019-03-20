@@ -68,6 +68,7 @@
 	EXTERN void mm_init(void);
 	EXTERN void *getkpg(int);
         EXTERN void frame_reset(void);
+        EXTERN void increase_counter(void);
 
 #endif /* _ASM_FILE_ */
 	
