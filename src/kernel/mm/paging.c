@@ -293,7 +293,7 @@ PRIVATE struct
 PRIVATE int allocf(void)
 {
 	int i;      /* Loop index.  */
-	int oldest  /* Frame index to change */
+	int oldest;  /* Frame index to change */
 	int classe; /* Lowest classe page. */
 	int tmpClasse;
 	struct pte *pg; /* Page table entry. */
@@ -315,7 +315,7 @@ PRIVATE int allocf(void)
 				continue;
 			
 			pg = getpte(curr_proc, frames[i].addr);
-			tmpClasse = 2 * pg->accessed + pg->cow;
+			tmpClasse = 2 * pg->accessed + pg->dirty;
 
 			/* Lowest classe page found. */
 			if ((classe < 0) || (tmpClasse < classe)){
@@ -339,6 +339,17 @@ found:
 	frames[i].count = 1;
 	
 	return (i);
+}
+
+PUBLIC void frame_reset(){
+
+	struct pte *pg;
+
+	for (int i = 0; i < NR_FRAMES; i++)
+	{
+		pg = getpte(curr_proc, frames[i].addr);
+		pg->accessed = 0;
+	}
 }
 
 /**
