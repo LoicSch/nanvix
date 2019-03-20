@@ -42,6 +42,7 @@ PRIVATE void do_clock()
 	
 	if (ticks - lastreset >= 50) {
 		
+		increase_counter();
 		frame_reset();
 		lastreset = ticks;
 	
