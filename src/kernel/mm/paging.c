@@ -295,8 +295,8 @@ PRIVATE int allocf(void)
 {
 	int i;      /* Loop index.  */
 	int oldest;  /* Frame index to change */
-	int classe; /* Lowest classe page. */
-	int tmpClasse;
+	unsigned int classe; /* Lowest classe page. */
+	unsigned int tmpClasse;
 	struct pte *pg; /* Page table entry. */
 	
 	/* Search for a free frame. */
@@ -319,7 +319,7 @@ PRIVATE int allocf(void)
 			tmpClasse = pg->accessed<<1 | pg->dirty;
 
 			/* Lowest classe page found. */
-			if ((classe < 0) || (tmpClasse < classe)){
+			if ((oldest < 0) || (tmpClasse < classe)){
 				oldest = i;
 				classe = tmpClasse;
 			}
