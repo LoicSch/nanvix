@@ -27,6 +27,7 @@
 #include <nanvix/mm.h>
 #include <nanvix/region.h>
 #include <signal.h>
+#include <nanvix/klib.h>
 #include "mm.h"
 
 /*
@@ -315,12 +316,17 @@ PRIVATE int allocf(void)
 				continue;
 			
 			pg = getpte(curr_proc, frames[i].addr);
-			tmpClasse = 2 * pg->accessed + pg->dirty;
+			tmpClasse = pg->accessed<<1 | pg->dirty;
 
 			/* Lowest classe page found. */
 			if ((classe < 0) || (tmpClasse < classe)){
 				oldest = i;
 				classe = tmpClasse;
+			}
+			else if (tmpClasse == classe){
+				if(krand()%2){
+					oldest = i;
+				}
 			}
 		}
 	}
