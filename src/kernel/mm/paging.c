@@ -279,6 +279,7 @@ PUBLIC void putkpg(void *kpg)
 PRIVATE struct
 {
 	unsigned count; /**< Reference count.     */
+	int counter;	/**< Counter for LRU      */
 	unsigned age;   /**< Age.                 */
 	pid_t owner;    /**< Page owner.          */
 	addr_t addr;    /**< Address of the page. */
@@ -294,12 +295,9 @@ PRIVATE int allocf(void)
 {
 	int i;      /* Loop index.  */
 	int oldest;  /* Frame index to change */
-	int classe; /* Lowest classe page. */
-	int tmpClasse;
 	struct pte *pg; /* Page table entry. */
 	
 	/* Search for a free frame. */
-	classe = -1;
 	oldest = -1;
 	for (i = 0; i < NR_FRAMES; i++)
 	{
@@ -313,14 +311,10 @@ PRIVATE int allocf(void)
 			/* Skip shared pages. */
 			if (frames[i].count > 1)
 				continue;
-			
-			pg = getpte(curr_proc, frames[i].addr);
-			tmpClasse = 2 * pg->accessed + pg->dirty;
 
 			/* Lowest classe page found. */
-			if ((classe < 0) || (tmpClasse < classe)){
+			if ((oldest < 0) || (frames[i].counter < frames[oldest].counter)) {
 				oldest = i;
-				classe = tmpClasse;
 			}
 		}
 	}
@@ -349,6 +343,19 @@ PUBLIC void frame_reset(){
 	{
 		pg = getpte(curr_proc, frames[i].addr);
 		pg->accessed = 0;
+	}
+}
+
+PUBLIC void increase_counter() {
+	
+	struct pte *pg;
+	
+	for (int i = 0; i < NR_FRAMES; i++) {
+		
+		pg = getpte(curr_proc, frames[i].addr);
+		frames[i].counter = frames[i].count >> 1;
+		frames[i].counter = pg->accessed | frames[i].counter;
+		
 	}
 }
 
