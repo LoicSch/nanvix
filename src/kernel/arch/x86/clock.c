@@ -21,12 +21,17 @@
 #include <nanvix/hal.h>
 #include <nanvix/klib.h>
 #include <nanvix/pm.h>
+#include <nanvix/mm.h>
 
 /* Clock ticks since system initialization. */
 PUBLIC unsigned ticks = 0;
 
+//PUBLIC unsigned lastrefresh = 0;
+
 /* Time at system startup. */
 PUBLIC unsigned startup_time = 0;
+
+PUBLIC unsigned lastreset = 0;
 
 /*
  * Handles a timer interrupt.
@@ -34,6 +39,13 @@ PUBLIC unsigned startup_time = 0;
 PRIVATE void do_clock()
 {
 	ticks++;
+	
+	if (ticks - lastreset >= 50) {
+		
+		frame_reset();
+		lastreset = ticks;
+	
+	}
 	
 	if (KERNEL_RUNNING(curr_proc))
 	{
