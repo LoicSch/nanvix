@@ -353,8 +353,8 @@ PUBLIC void increase_counter() {
 	for (int i = 0; i < NR_FRAMES; i++) {
 		
 		pg = getpte(curr_proc, frames[i].addr);
-		frames[i].counter = frames[i].count >> 1;
-		frames[i].counter = pg->accessed << (sizeof(int)*8-1) | frames[i].counter;
+		frames[i].counter >>= 1;
+		frames[i].counter |= pg->accessed << (sizeof(int)*8-1);
 		
 	}
 }
