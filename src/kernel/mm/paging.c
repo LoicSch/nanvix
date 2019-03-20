@@ -293,7 +293,7 @@ PRIVATE struct
 PRIVATE int allocf(void)
 {
 	int i;      /* Loop index.  */
-	int oldest  /* Frame index to change */
+	int oldest;  /* Frame index to change */
 	int classe; /* Lowest classe page. */
 	int tmpClasse;
 	struct pte *pg; /* Page table entry. */
