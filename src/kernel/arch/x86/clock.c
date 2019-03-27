@@ -26,8 +26,6 @@
 /* Clock ticks since system initialization. */
 PUBLIC unsigned ticks = 0;
 
-//PUBLIC unsigned lastrefresh = 0;
-
 /* Time at system startup. */
 PUBLIC unsigned startup_time = 0;
 
@@ -40,14 +38,6 @@ PRIVATE void do_clock()
 {
 	ticks++;
 	
-	if (ticks - lastreset >= 50) {
-		
-		increase_counter();
-		frame_reset();
-		lastreset = ticks;
-	
-	}
-	
 	if (KERNEL_RUNNING(curr_proc))
 	{
 		curr_proc->ktime++;
@@ -59,6 +49,14 @@ PRIVATE void do_clock()
 	/* Give up processor time. */
 	if (--curr_proc->counter == 0)
 		yield();
+
+	if (ticks - lastreset >= 50) {
+		
+		increase_counter();
+		frame_reset();
+		lastreset = ticks;
+	
+	}
 }
 
 /*

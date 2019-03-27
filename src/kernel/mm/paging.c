@@ -341,8 +341,10 @@ PUBLIC void frame_reset(){
 
 	for (int i = 0; i < NR_FRAMES; i++)
 	{
-		pg = getpte(curr_proc, frames[i].addr);
-		pg->accessed = 0;
+		if(frames[i].count > 0){
+			pg = getpte(curr_proc, frames[i].addr);
+			pg->accessed = 0;
+		}
 	}
 }
 
@@ -695,7 +697,7 @@ PUBLIC int vfault(addr_t addr)
 	struct pte *pg;       /* Working page.                         */
 	struct region *reg;   /* Working region.                       */
 	struct pregion *preg; /* Working process region.               */
-	
+
 	/* Get associated region. */
 	preg = findreg(curr_proc, addr);
 	if (preg == NULL)

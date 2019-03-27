@@ -55,7 +55,7 @@
 	#define UMEM_SIZE (MEMORY_SIZE - KMEM_SIZE - KPOOL_SIZE)
 
 #ifndef _ASM_FILE_
-	
+
 	/* Forward definitions. */
 	EXTERN int chkmem(const void *, size_t, mode_t);
 	EXTERN int fubyte(const void *);

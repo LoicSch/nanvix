@@ -106,8 +106,9 @@ static int swap_test(void)
 	t1 = times(&timing);
 	
 	/* Print timing statistics. */
-	if (flags & VERBOSE)
+	if (flags & VERBOSE){
 		printf("  Elapsed: %d\n", t1 - t0);
+	}
 	
 	return (0);
 
