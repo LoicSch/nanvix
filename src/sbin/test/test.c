@@ -51,7 +51,7 @@ static unsigned flags = VERBOSE | FULL;
  */
 static int swap_test(void)
 {
-	#define N 1000
+	#define N 1280
 	int *a, *b, *c;
 	clock_t t0, t1;
 	struct tms timing;
@@ -84,8 +84,8 @@ static int swap_test(void)
 					
 				for (int k = 0; k < N; k++)
 					c[i*N + j] += a[i*N + k]*b[k*N + j];
-				printf("ligne : %d\n", j);
 			}
+			printf("ligne : %d\n", i);
 		}
 	}
 	

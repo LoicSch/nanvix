@@ -38,13 +38,6 @@ PRIVATE void do_clock()
 {
 	ticks++;
 	
-	if (ticks - lastreset >= 50) {
-		
-		frame_reset();
-		lastreset = ticks;
-	
-	}
-	
 	if (KERNEL_RUNNING(curr_proc))
 	{
 		curr_proc->ktime++;
@@ -56,6 +49,13 @@ PRIVATE void do_clock()
 	/* Give up processor time. */
 	if (--curr_proc->counter == 0)
 		yield();
+		
+	if (ticks - lastreset >= 50) {
+		
+		frame_reset();
+		lastreset = ticks;
+	
+	}
 }
 
 /*

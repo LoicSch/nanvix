@@ -351,8 +351,10 @@ PUBLIC void frame_reset(){
 
 	for (int i = 0; i < NR_FRAMES; i++)
 	{
-		pg = getpte(curr_proc, frames[i].addr);
-		pg->accessed = 0;
+		if (frames[i].count > 0) {
+			pg = getpte(curr_proc, frames[i].addr);
+			pg->accessed = 0;
+		}
 	}
 }
 
