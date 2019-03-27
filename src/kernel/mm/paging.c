@@ -329,7 +329,6 @@ PRIVATE int allocf(void)
 found:		
 
 	frames[i].age = ticks;
-	frames[i].counter = 0;
 	frames[i].count = 1;
 	
 	return (i);
@@ -354,6 +353,9 @@ PUBLIC void increase_counter() {
 	
 	for (int i = 0; i < NR_FRAMES; i++) {
 		
+		if(frames[i].count == 0)
+			continue;
+
 		pg = getpte(curr_proc, frames[i].addr);
 		frames[i].counter >>= 1;
 		frames[i].counter |= pg->accessed << (sizeof(int)*8-1);
