@@ -26,8 +26,6 @@
 /* Clock ticks since system initialization. */
 PUBLIC unsigned ticks = 0;
 
-//PUBLIC unsigned lastrefresh = 0;
-
 /* Time at system startup. */
 PUBLIC unsigned startup_time = 0;
 

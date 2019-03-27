@@ -27,7 +27,6 @@
 #include <nanvix/mm.h>
 #include <nanvix/region.h>
 #include <signal.h>
-#include <nanvix/klib.h>
 #include "mm.h"
 
 /*
@@ -58,7 +57,6 @@
  */
 #define getpte(p, a) \
 	(&((struct pte *)((getpde(p, a)->frame << PAGE_SHIFT) + KBASE_VIRT))[PG(a)])
-
 
 /*============================================================================*
  *                             Swapping System                                *
@@ -694,7 +692,7 @@ PUBLIC int vfault(addr_t addr)
 	struct pte *pg;       /* Working page.                         */
 	struct region *reg;   /* Working region.                       */
 	struct pregion *preg; /* Working process region.               */
-	
+
 	/* Get associated region. */
 	preg = findreg(curr_proc, addr);
 	if (preg == NULL)
