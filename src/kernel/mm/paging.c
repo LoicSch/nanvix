@@ -317,8 +317,10 @@ PRIVATE int allocf(void)
 
 			/* Oldest page found. */
 			if ((oldest < 0) || (OLDEST(i, oldest))){
+				/* if this frame hasn't been modified, it become the oldest */
 				if(!pg->accessed)
 					oldest = i;
+				/* else we give it a second chance */
 				else {
 					pg->accessed = 0;
 					frames[i].age = ticks;
