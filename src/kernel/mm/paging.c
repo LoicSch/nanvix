@@ -313,7 +313,9 @@ PRIVATE int allocf(void)
 			if (frames[i].count > 1)
 				continue;
 			
+			/* Get the page table */
 			pg = getpte(curr_proc, frames[i].addr);
+			/* Compute the classe */
 			tmpClasse = pg->accessed<<1 | pg->dirty;
 
 			/* Lowest classe page found. */
@@ -345,6 +347,7 @@ found:
 	return (i);
 }
 
+/* Reset all accessed attribut */
 PUBLIC void frame_reset(){
 
 	struct pte *pg;
